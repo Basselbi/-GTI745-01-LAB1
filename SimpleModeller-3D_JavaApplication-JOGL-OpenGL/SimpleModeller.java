@@ -768,7 +768,8 @@ public class SimpleModeller implements ActionListener {
 	JCheckBox displayCameraTargetCheckBox;
 	JCheckBox displayBoundingBoxCheckBox;
 	JCheckBox enableCompositingCheckBox;
-
+	JCheckBox addwireframeCheckBox;
+	
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if ( source == deleteAllMenuItem ) {
@@ -837,6 +838,12 @@ public class SimpleModeller implements ActionListener {
 			sceneViewer.enableCompositing = ! sceneViewer.enableCompositing;
 			sceneViewer.repaint();
 		}
+//		else if ( source == addwireframeCheckBox ) {
+//			sceneViewer.displayWorldAxes = ! sceneViewer.displayWorldAxes;
+//			sceneViewer.repaint();
+//		}
+		
+		 
 	}
 
 
@@ -932,7 +939,15 @@ public class SimpleModeller implements ActionListener {
 		enableCompositingCheckBox.setAlignmentX( Component.LEFT_ALIGNMENT );
 		enableCompositingCheckBox.addActionListener(this);
 		toolPanel.add( enableCompositingCheckBox );
-
+		 
+		
+	/**Chek Box addwireframe*/
+		addwireframeCheckBox = new JCheckBox("Add  wireframe", sceneViewer.addwireframe );
+		addwireframeCheckBox.setAlignmentX( Component.LEFT_ALIGNMENT );
+		addwireframeCheckBox.addActionListener(this);
+		toolPanel.add( addwireframeCheckBox );
+		
+		
 		frame.pack();
 		frame.setVisible( true );
 	}
