@@ -838,10 +838,10 @@ public class SimpleModeller implements ActionListener {
 			sceneViewer.enableCompositing = ! sceneViewer.enableCompositing;
 			sceneViewer.repaint();
 		}
-//		else if ( source == addwireframeCheckBox ) {
-//			sceneViewer.displayWorldAxes = ! sceneViewer.displayWorldAxes;
-//			sceneViewer.repaint();
-//		}
+		else if ( source == addwireframeCheckBox ) {
+			sceneViewer.addwireframe = ! sceneViewer.addwireframe;
+			sceneViewer.repaint();
+		}
 		
 		 
 	}
