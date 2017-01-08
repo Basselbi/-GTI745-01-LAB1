@@ -1,0 +1,108 @@
+<html>
+<body>
+
+<p>
+Pour compiler et ex&eacute;cuter
+le code, vous avez besoin de la librarie JOGL.
+Une copie se trouve au
+<a href="http://profs.etsmtl.ca/mmcguffin/code/java/lib/JOGL/">http://profs.etsmtl.ca/mmcguffin/code/java/lib/JOGL/</a>
+
+<p>
+Le point d'entr&eacute;e du code se trouve &agrave; SimpleModeller.main().
+Donc, pour ceux qui travaillent sur une invite de commande, faites
+<pre>
+   javac *.java
+</pre>
+pour compiler, ensuite
+<pre>
+   java SimpleModeller
+</pre>
+pour ex&eacute;cuter le logiciel.
+
+<p>
+Instructions de fonctionnement:
+<blockquote>
+
+<p>
+Pour cr&eacute;er quelques bo&icirc;tes, appuyez sur le bouton "Create Box"
+quelques fois.
+Ensuite, pour tourner la vue de cam&eacute;ra,
+mettez le curseur de souris dans la vue 3D,
+appuyez et tenez la touche "Ctrl", appuyez et tenez le bouton gauche de souris,
+et glissez la souris.
+
+<p>
+Pour d&eacute;placer une des bo&icirc;tes, mettez le curseur de souris sur une bo&icirc;te,
+appuyez et tenez le bouton gauche de souris,
+et glissez la souris.
+Le d&eacute;placement de la bo&icirc;te se fera dans la plan de la face
+sur laquelle vous avez cliqu&eacute;.
+Donc, en cliquant sur diff&eacute;rentes faces d'une bo&icirc;te,
+vous pouvez effectuer des translations dans diff&eacute;rents plans.
+
+<p>
+Pour redimensionner une des bo&icirc;tes, mettez le curseur de souris sur une bo&icirc;te,
+appuyez et tenez la touche "Shift", appuyez et tenez le bouton gauche de souris,
+et glissez la souris.
+La face sur laquelle vous avez cliqu&eacute; sera d&eacute;plac&eacute;e
+par rapport &agrave; la bo&icirc;te.
+
+<p>
+Pour s&eacute;lectionner une bo&icirc;te, cliquer sur la bo&icirc;te avec le bouton
+gauche de souris.  Une fois que la bo&icirc;te est s&eacute;lectionn&eacute;e,
+vous pouvez cr&eacute;er d'autres bo&icirc;tes adjacentes
+en appuyant sur le bouton "Create Box"
+(les nouvelles bo&icirc;tes seront adjacentes dans la direction de la face
+que vous avez cliqu&eacute; dessus).
+Vous pouvez aussi centrer la cam&eacute;ra sur la bo&icirc;te s&eacute;lectionn&eacute;e
+avec le bouton "Look At Selection",
+ou supprimer la bo&icirc;te s&eacute;lectionn&eacute;e avec le bouton
+"Delete Selection".
+
+<p>
+Pour changer la couleur de la bo&icirc;te s&eacute;lectionn&eacute;e,
+mettez le curseur de souris dans la vue 3D
+et appuyez le bouton droit de souris pour faire afficher un menu radial
+et glissez vers une des options de couleur.
+Remarquez que la commande au nord ("Create Box") dans le menu radial
+est aussi la commande par d&eacute;faut, qui est s&eacute;lectionn&eacute;e
+m&ecirc;me si on l&acirc;che avec le curseur au centre du menu.
+Cela veut dire qu'on peut rapidement cr&eacute;er plusieurs bo&icirc;tes
+avec des simples clics du bouton droit, et on peut rapidement changer
+la couleur de la bo&icirc;te s&eacute;lectionn&eacute;e
+avec des glissements rapides du bouton droit.
+
+<p>
+La case &agrave; cocher "Display World Axes" permet de voir les
+axes du syst&egrave;me de coordonn&eacute;es global
+("world space").  L'axe des x est montr&eacute; en rouge,
+celui des y est en vert, et celui des z est en bleu.
+
+<p>
+La commande de menu "File/Delete All" efface toutes les bo&icirc;tes.
+
+<p>
+Ctrl+Left : "orbiter" la cam&eacute;ra, c.-&agrave;-d. tourner la cam&eacute;ra autour de son point cible
+
+<p>
+Ctrl+Right : "pan", c.-&agrave;-d. translation de cam&eacute;ra dans le plan de la cam&eacute;ra
+
+<p>
+Ctrl+Left+Right : "dolly", c.-&agrave;-d. translation de cam&eacute;ra le long de l'axe de la cam&eacute;ra
+   pour voir de plus pr&egrave;s ou plus loin
+
+<p>
+Left : s&eacute;lectionner et/ou d&eacute;placer la bo&icirc;te s&eacute;lectionn&eacute;e
+
+<p>
+Shift+Left : redimensionner la bo&icirc;te s&eacute;lectionn&eacute;e
+
+<p>
+Right : menu radial
+
+</blockquote>
+
+</body>
+</html>
+
+
