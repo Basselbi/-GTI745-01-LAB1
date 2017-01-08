@@ -364,6 +364,7 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 	public boolean displayCameraTarget = false;
 	public boolean displayBoundingBox = false;
 	public boolean enableCompositing = false;
+	public boolean addwireframe = false;
 
 	int mouse_x, mouse_y, old_mouse_x, old_mouse_y;
 
