@@ -454,7 +454,20 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 		scene.setSelectionStateOfBox( indexOfSelectedBox, false );
 		indexOfSelectedBox = scene.coloredBoxes.size() - 1;
 		scene.setSelectionStateOfBox( indexOfSelectedBox, true );
+		System.out.println("");
+		System.out.println(this.selectedPoint.x());
+		System.out.println(this.selectedPoint.y()); 
+		System.out.println(this.selectedPoint.z());
+		
+		System.out.println("");
+		System.out.println(this.normalAtSelectedPoint.x());
+		System.out.println(this.normalAtSelectedPoint.y()); 
+		System.out.println(this.normalAtSelectedPoint.z());
+		System.out.println("");
+//		 "" + this.normalAtSelectedPoint.x()
 	}
+	
+	
 
 	public void setColorOfSelection( float r, float g, float b ) {
 		if ( indexOfSelectedBox >= 0 ) {
@@ -603,6 +616,20 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 
 		if ( radialMenu.isVisible() || (SwingUtilities.isRightMouseButton(e) && !e.isShiftDown() && !e.isControlDown()) ) {
 			int returnValue = radialMenu.pressEvent( mouse_x, mouse_y );
+			
+			/*Il suffit d'ajouter les fonctionaliter de selection que le bouton gauche perform*/
+			if ( indexOfSelectedBox >= 0 )
+				// de-select the old box
+				scene.setSelectionStateOfBox( indexOfSelectedBox, false );
+			indexOfSelectedBox = indexOfHilitedBox;
+			selectedPoint.copy( hilitedPoint );
+			normalAtSelectedPoint.copy( normalAtHilitedPoint );
+			if ( indexOfSelectedBox >= 0 ) {
+				scene.setSelectionStateOfBox( indexOfSelectedBox, true );
+			}
+			repaint();
+			/*Fin de la fonctionaliter de selection*/
+			
 			if ( returnValue == CustomWidget.S_REDRAW )
 				repaint();
 			if ( returnValue != CustomWidget.S_EVENT_NOT_CONSUMED )
@@ -611,6 +638,8 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 
 		updateHiliting();
 
+		 
+		/*Le bouton Droit Rest tel quel , on pourra selectioneer le box */
 		if ( SwingUtilities.isLeftMouseButton(e) && !e.isControlDown() ) {
 			if ( indexOfSelectedBox >= 0 )
 				// de-select the old box
