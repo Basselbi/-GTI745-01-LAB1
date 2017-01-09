@@ -333,6 +333,13 @@ class Scene {
 		if ( ! box.isEmpty() )
 			drawBox( gl, box, false, true, false );
 	}
+	
+	public void drawWidgetOfScene( GL gl ) {
+		AlignedBox3D box = getBoundingBoxOfScene();
+		if ( ! box.isEmpty() )
+			drawBox( gl,   box, false, true, false ); 
+	}
+	
 }
 
 
@@ -557,6 +564,14 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 		if ( radialMenu.isVisible() ) {
 			radialMenu.draw( gl, glut, getWidth(), getHeight() );
 		}
+		
+		if ( addwireframe ) {
+			 
+			
+			
+			scene.drawWidgetOfScene (gl );
+		}
+		
 
 		// gl.glFlush(); // I don't think this is necessary
 	}
