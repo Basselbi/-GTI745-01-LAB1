@@ -1,5 +1,8 @@
 
 import java.lang.Math;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
@@ -12,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -396,7 +400,7 @@ class SceneViewer extends GLCanvas implements  Observer ,MouseListener, MouseMot
 	public boolean displayBoundingBox = false;
 	public boolean enableCompositing = false;
 	public boolean addwireframe = false;
-
+	public List<Integer> intList = new ArrayList<Integer>();
 	int mouse_x, mouse_y, old_mouse_x, old_mouse_y;
 
 	public SceneViewer( GLCapabilities caps ) {
@@ -647,12 +651,30 @@ class SceneViewer extends GLCanvas implements  Observer ,MouseListener, MouseMot
 	}
 
 	public void mouseClicked( MouseEvent e ) { 
+		 
 		
+		if ((e.getModifiers() & InputEvent.BUTTON2_MASK ) != 0) {
+		      System.out.println("middle" + (e.getPoint()));
+		      indexOfSelectedBox = indexOfHilitedBox;
+				selectedPoint.copy( hilitedPoint );
+				normalAtSelectedPoint.copy( normalAtHilitedPoint );
+		      if ( indexOfSelectedBox >= 0 ) {
+					scene.setSelectionStateOfBox( indexOfSelectedBox, true );
+					intList.add(indexOfSelectedBox);
+				}
+		      
+		       
+					 
+					//repaint();
+				 
+		      repaint();
+		    }
 		 
 	}
 	public void mouseEntered( MouseEvent e ) { }
 	public void mouseExited( MouseEvent e ) { }
-
+	
+	  
 	public void mousePressed( MouseEvent e ) {
 		old_mouse_x = mouse_x;
 		old_mouse_y = mouse_y;
@@ -790,8 +812,8 @@ class SceneViewer extends GLCanvas implements  Observer ,MouseListener, MouseMot
 			repaint();
 		}
 		else if (
-			SwingUtilities.isLeftMouseButton(e) && !e.isControlDown()
-			&& indexOfSelectedBox >= 0
+			(SwingUtilities.isLeftMouseButton(e) && !e.isControlDown()
+			&& indexOfSelectedBox >= 0)|| SwingUtilities.isMiddleMouseButton( e)
 		) {
 			if ( !e.isShiftDown() ) {
 				// translate a box
@@ -808,6 +830,14 @@ class SceneViewer extends GLCanvas implements  Observer ,MouseListener, MouseMot
 					Vector3D translation = Point3D.diff( intersection2, intersection1 );
 					scene.translateBox( indexOfSelectedBox, translation );
 					repaint();
+					
+				if( SwingUtilities.isMiddleMouseButton( e))
+				{
+					for(Iterator<Integer> i = intList.iterator(); i.hasNext(); ) {
+					    Integer item = i.next();
+					    scene.translateBox( item, translation );
+					}
+				}
 				}
 			}
 			else {
