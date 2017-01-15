@@ -1,27 +1,36 @@
 
 import java.lang.Math;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import java.awt.Container;
 import java.awt.Component;
 import java.awt.Dimension;
-
+import java.awt.GridLayout;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Color;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.BoxLayout;
 
 import javax.media.opengl.GL;
@@ -34,7 +43,7 @@ import javax.media.opengl.GLEventListener;
 import com.sun.opengl.util.GLUT;
 
 
-class ColoredBox {
+class ColoredBox   {
 	public static final float DEFAULT_SIZE = 0.5f;
 	public static final float DEFAULT_ALPHA = 0.5f;
 
@@ -53,6 +62,7 @@ class ColoredBox {
 			alignedBox3D.getMin(),
 			alignedBox3D.getMax()
 		);
+		
 		r = red;
 		g = green;
 		b = blue;
@@ -68,8 +78,8 @@ class Scene {
 	AlignedBox3D boundingBoxOfScene = new AlignedBox3D();
 	boolean isBoundingBoxOfSceneDirty = false;
 
-
-
+	Color color;
+	
 
 	public Scene() {
 	}
@@ -130,6 +140,8 @@ class Scene {
 		}
 		return indexOfIntersectedBox;
 	}
+	
+	 
 
 	public AlignedBox3D getBox( int index ) {
 		if ( 0 <= index && index < coloredBoxes.size() )
@@ -159,6 +171,17 @@ class Scene {
 			cb.r = r;
 			cb.g = g;
 			cb.b = b;
+			
+		}
+	}
+	public void setColorOfBoxAlpha( int index, float r, float g, float b ,float alpha) {
+		if ( 0 <= index && index < coloredBoxes.size() ) {
+			ColoredBox cb = coloredBoxes.elementAt(index);
+			cb.r = r;
+			cb.g = g;
+			cb.b = b;
+			cb.a= alpha;
+			
 		}
 	}
 
@@ -343,12 +366,13 @@ class Scene {
 }
 
 
+ 
 
-
-class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener, GLEventListener {
+class SceneViewer extends GLCanvas implements  Observer ,MouseListener, MouseMotionListener, GLEventListener {
 
 	GLUT glut;
-
+	 
+	 
 	public Scene scene = new Scene();
 	public int indexOfSelectedBox = -1; // -1 for none
 	private Point3D selectedPoint = new Point3D();
@@ -356,7 +380,7 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 	public int indexOfHilitedBox = -1; // -1 for none
 	private Point3D hilitedPoint = new Point3D();
 	private Vector3D normalAtHilitedPoint = new Vector3D();
-
+ 
 	Camera3D camera = new Camera3D();
 
 	RadialMenuWidget radialMenu = new RadialMenuWidget();
@@ -470,17 +494,38 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 	
 
 	public void setColorOfSelection( float r, float g, float b ) {
+		
+		 
 		if ( indexOfSelectedBox >= 0 ) {
 			scene.setColorOfBox( indexOfSelectedBox, r, g, b );
 		}
 	}
-
+	
+	public void setColorOfSelectionAlpha( float r, float g, float b ,float alpha) {
+		
+		 
+		if ( indexOfSelectedBox >= 0 ) {
+			scene.setColorOfBoxAlpha( indexOfSelectedBox, r, g, b ,alpha);
+			 
+		}
+	}
+	
+	
+	 
 	public void deleteSelection() {
 		if ( indexOfSelectedBox >= 0 ) {
 			scene.deleteBox( indexOfSelectedBox );
 			indexOfSelectedBox = -1;
 			indexOfHilitedBox = -1;
 		}
+	}
+	public int returnSelection()
+	{
+		if ( indexOfSelectedBox >= 0 ) {
+		return indexOfSelectedBox;
+		
+		}
+		return -1 ;
 	}
 
 	public void deleteAll() {
@@ -579,9 +624,6 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 		}
 		
 		if ( addwireframe ) {
-			 
-			
-			
 			scene.drawWidgetOfScene (gl );
 		}
 		
@@ -604,7 +646,10 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 		}
 	}
 
-	public void mouseClicked( MouseEvent e ) { }
+	public void mouseClicked( MouseEvent e ) { 
+		
+		 
+	}
 	public void mouseEntered( MouseEvent e ) { }
 	public void mouseExited( MouseEvent e ) { }
 
@@ -793,16 +838,25 @@ class SceneViewer extends GLCanvas implements MouseListener, MouseMotionListener
 			}
 		}
 	}
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	 
 }
+ 
+ 
 
-public class SimpleModeller implements ActionListener {
+
+public class SimpleModeller  extends JPanel implements ActionListener {
 
 	static final String applicationName = "Simple Modeller";
 
 	JFrame frame;
 	Container toolPanel;
 	SceneViewer sceneViewer;
-
+	DrawingCanvas canvas = new DrawingCanvas();
 	JMenuItem deleteAllMenuItem, quitMenuItem, aboutMenuItem;
 	JButton createBoxButton;
 	JButton deleteSelectionButton;
@@ -813,8 +867,176 @@ public class SimpleModeller implements ActionListener {
 	JCheckBox displayBoundingBoxCheckBox;
 	JCheckBox enableCompositingCheckBox;
 	JCheckBox addwireframeCheckBox;
+	 JLabel rgbValue = new JLabel("");
+	  JButton boutonCouleur = new JButton("Click me ");
+	  int indexBox =-1;
+
+		int red =0 ; 
+		  int blue =0 ; 
+		  int green=0; 
+		  int alpha = 0  ;
+		  
+	  JSlider sliderR, sliderG, sliderB, sliderH, sliderS, sliderBr,
+	      sliderAlpha;
 	
-	public void actionPerformed(ActionEvent e) {
+	   
+	  public int getRed() {
+			return red;
+		}
+
+
+		public void setRed(int red) {
+			this.red = red;
+		}
+
+
+		public int getBlue() {
+			return blue;
+		}
+
+
+		public void setBlue(int blue) {
+			this.blue = blue;
+		}
+
+
+		public int getGreen() {
+			return green;
+		}
+
+
+		public void setGreen(int green) {
+			this.green = green;
+		}
+
+
+		public int getAlpha() {
+			return alpha;
+		}
+
+
+		public void setAlpha(int alpha) {
+			this.alpha = alpha;
+		}
+
+	  
+	  
+	  public SimpleModeller()
+	  {
+		  
+		    sliderR = getSlider(0, 255, 0, 50, 5);
+		    sliderG = getSlider(0, 255, 0, 50, 5);
+		    sliderB = getSlider(0, 255, 0, 50, 5);
+		    sliderH = getSlider(0, 10, 0, 5, 1);
+		    sliderS = getSlider(0, 10, 0, 5, 1);
+		    sliderBr = getSlider(0, 10, 0, 5, 1);
+		    sliderAlpha = getSlider(0, 255, 255, 50, 5);
+	  }
+	  
+	  
+	  class DrawingCanvas extends Canvas {
+		    Color color;
+		    int redValue, greenValue, blueValue;
+		    int alphaValue = 255;
+		    float[] hsbValues = new float[3];
+		    public Color setBackgroundColor() {
+		      color = new Color(redValue, greenValue, blueValue, alphaValue);
+		      setBackground(color);
+		      return color ;
+		    }
+		  }
+
+		  class SliderListener implements ChangeListener {
+			  
+		     
+			  public void stateChanged(ChangeEvent e) {
+		      JSlider slider = (JSlider) e.getSource();
+		      
+		      if (slider == sliderAlpha) {
+		    	 
+		        canvas.alphaValue = slider.getValue();
+		        
+		        canvas.setBackgroundColor();
+
+			      setBlue(canvas.blueValue);
+			      setGreen(canvas.greenValue);
+			      setRed(canvas.redValue);
+			      setAlpha(canvas.alphaValue);
+			  
+			      sceneViewer.setColorOfSelectionAlpha( (float)getRed(), (float) getGreen(),(float) getBlue(),(float) getAlpha());
+			      sceneViewer.repaint();
+		       
+		      } else if (slider == sliderR) {
+		        canvas.redValue = slider.getValue();
+		        canvas.setBackgroundColor();
+	 
+		       // displayRGBColor();
+
+			      setBlue(canvas.blueValue);
+			      setGreen(canvas.greenValue);
+			      setRed(canvas.redValue);
+			      setAlpha(canvas.alphaValue);
+
+			      sceneViewer.setColorOfSelectionAlpha( (float)getRed(), (float) getGreen(),(float) getBlue(),(float) getAlpha());
+			      sceneViewer.repaint();
+		      } else if (slider == sliderG) {
+ 
+		        canvas.greenValue = slider.getValue();
+		        
+		        
+		        canvas.setBackgroundColor();
+		       
+
+			      setBlue(canvas.blueValue);
+			      setGreen(canvas.greenValue);
+			      setRed(canvas.redValue);
+			      setAlpha(canvas.alphaValue);
+			  
+
+			      sceneViewer.setColorOfSelectionAlpha( (float)getRed(), (float) getGreen(),(float) getBlue(),(float) getAlpha());
+			      sceneViewer.repaint();
+		      } 
+		      else if (slider == sliderB) {
+		    	  
+		        canvas.blueValue = slider.getValue();
+		         
+		        canvas.setBackgroundColor();
+			       
+
+			      setBlue(canvas.blueValue);
+			      setGreen(canvas.greenValue);
+			      setRed(canvas.redValue);
+			      setAlpha(canvas.alphaValue);
+			  
+
+			      sceneViewer.setColorOfSelectionAlpha( (float)getRed(), (float) getGreen(),(float) getBlue(),(float) getAlpha());
+			      sceneViewer.repaint();
+		      } else if (slider == sliderH) {
+		        canvas.hsbValues[0] = (float) (slider.getValue() * 0.1);
+		      //  displayHSBColor();
+		      } else if (slider == sliderS) {
+		        canvas.hsbValues[1] = (float) (slider.getValue() * 0.1);
+		       // displayHSBColor();
+		      } else if (slider == sliderBr) {
+		        canvas.hsbValues[2] = (float) (slider.getValue() * 0.1);
+		      //  displayHSBColor();
+		      }
+		      
+		  System.out.println(canvas.getBackground().getBlue());    
+		    }
+		  }
+
+	  public JSlider getSlider(int min, int max, int init, int mjrTkSp, int mnrTkSp) {
+		    JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, init);
+		    slider.setPaintTicks(true);
+		    slider.setMajorTickSpacing(mjrTkSp);
+		    slider.setMinorTickSpacing(mnrTkSp);
+		    slider.setPaintLabels(true);
+		    slider.addChangeListener(new SliderListener());
+		    return slider;
+		  }
+	
+	  public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if ( source == deleteAllMenuItem ) {
 			int response = JOptionPane.showConfirmDialog(
@@ -886,10 +1108,10 @@ public class SimpleModeller implements ActionListener {
 			sceneViewer.addwireframe = ! sceneViewer.addwireframe;
 			sceneViewer.repaint();
 		}
+	  }
 		
 		 
-	}
-
+	
 
 	// For thread safety, this should be invoked
 	// from the event-dispatching thread.
@@ -940,10 +1162,41 @@ public class SimpleModeller implements ActionListener {
 		// We used to use a BoxLayout as the layout manager here,
 		// but it caused problems with resizing behavior due to
 		// a JOGL bug https://jogl.dev.java.net/issues/show_bug.cgi?id=135
+		
+		 JPanel panneauCouleur = new JPanel();
 		pane.setLayout( new BorderLayout() );
 		pane.add( toolPanel, BorderLayout.LINE_START );
 		pane.add( sceneViewer, BorderLayout.CENTER );
 
+		
+		panneauCouleur.setLayout(new GridLayout(6, 2, 15, 0));
+		panneauCouleur.add(new JLabel("R-G-B Sliders (0 - 255)"));
+		panneauCouleur.add(new JLabel("H-S-B Sliders (ex-1)"));
+		panneauCouleur.add(sliderR);
+		panneauCouleur.add(sliderH);
+		panneauCouleur.add(sliderG);
+		panneauCouleur.add(sliderS);
+		panneauCouleur.add(sliderB);
+		panneauCouleur.add(sliderBr);
+ 
+		panneauCouleur.add(new JLabel("Alpha Adjustment (0 - 255): ", JLabel.RIGHT));
+		panneauCouleur.add(sliderAlpha);
+ 
+		panneauCouleur.add(new JLabel("RGB Value: ", JLabel.RIGHT));
+ 	    
+ 	    rgbValue.setBackground(Color.white);
+ 	    rgbValue.setForeground(Color.black);
+ 	    rgbValue.setOpaque(true);
+ 	   panneauCouleur.add(rgbValue);
+ 
+ 	 
+ 	 panneauCouleur.add(canvas);
+        
+       
+      //scene.setColorOfBox(sceneViewer.returnSelectedBox(),canvas.redValue, canvas.greenValue, canvas.blueValue);
+      canvas.repaint();
+	 
+		pane.add(panneauCouleur, BorderLayout.LINE_END);
 		createBoxButton = new JButton("Create Box");
 		createBoxButton.setAlignmentX( Component.LEFT_ALIGNMENT );
 		createBoxButton.addActionListener(this);
@@ -984,7 +1237,7 @@ public class SimpleModeller implements ActionListener {
 		enableCompositingCheckBox.addActionListener(this);
 		toolPanel.add( enableCompositingCheckBox );
 		 
-		
+		 
 	/**Chek Box addwireframe*/
 		addwireframeCheckBox = new JCheckBox("Add  wireframe", sceneViewer.addwireframe );
 		addwireframeCheckBox.setAlignmentX( Component.LEFT_ALIGNMENT );
@@ -1002,10 +1255,13 @@ public class SimpleModeller implements ActionListener {
 			new Runnable() {
 				public void run() {
 					SimpleModeller sp = new SimpleModeller();
+					 
 					sp.createUI();
 				}
 			}
 		);
 	}
 }
+
+	 
 
