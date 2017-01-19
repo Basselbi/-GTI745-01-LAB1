@@ -954,13 +954,13 @@ public class SimpleModeller  extends JPanel implements ActionListener {
 	  public SimpleModeller()
 	  {
 		  
-		    sliderR = getSlider(0, 255, 0, 50, 5);
-		    sliderG = getSlider(0, 255, 0, 50, 5);
-		    sliderB = getSlider(0, 255, 0, 50, 5);
-		    sliderH = getSlider(0, 10, 0, 5, 1);
-		    sliderS = getSlider(0, 10, 0, 5, 1);
-		    sliderBr = getSlider(0, 10, 0, 5, 1);
-		    sliderAlpha = getSlider(0, 255, 255, 50, 5);
+		    sliderR = getSlider(0, 10, 0, 50, 5);
+		    sliderG = getSlider(0, 10, 0, 50, 5);
+		    sliderB = getSlider(0, 10, 0, 50, 5);
+		 //   sliderH = getSlider(0, 10, 0, 5, 1);
+		 //   sliderS = getSlider(0, 10, 0, 5, 1);
+		 //   sliderBr = getSlider(0, 10, 0, 5, 1);
+		    sliderAlpha = getSlider(0, 10, 1, 50, 5);
 	  }
 	  
 	  
@@ -993,7 +993,9 @@ public class SimpleModeller  extends JPanel implements ActionListener {
 			      setRed(canvas.redValue);
 			      setAlpha(canvas.alphaValue);
 			  
-			      sceneViewer.setColorOfSelectionAlpha( (float)getRed(), (float) getGreen(),(float) getBlue(),(float) getAlpha());
+			  //    sceneViewer.setColorOfSelectionAlpha( (float) 0.5, (float) 0.3,(float) 0.2,(float) 0.8);
+				     
+			      sceneViewer.setColorOfSelectionAlpha( (float)getRed()/10, (float) getGreen()/10,(float) getBlue()/10,(float) getAlpha()/10);
 			      sceneViewer.repaint();
 		       
 		      } else if (slider == sliderR) {
@@ -1041,7 +1043,7 @@ public class SimpleModeller  extends JPanel implements ActionListener {
 
 			      sceneViewer.setColorOfSelectionAlpha( (float)getRed(), (float) getGreen(),(float) getBlue(),(float) getAlpha());
 			      sceneViewer.repaint();
-		      } else if (slider == sliderH) {
+		      }/* else if (slider == sliderH) {
 		        canvas.hsbValues[0] = (float) (slider.getValue() * 0.1);
 		      //  displayHSBColor();
 		      } else if (slider == sliderS) {
@@ -1050,7 +1052,7 @@ public class SimpleModeller  extends JPanel implements ActionListener {
 		      } else if (slider == sliderBr) {
 		        canvas.hsbValues[2] = (float) (slider.getValue() * 0.1);
 		      //  displayHSBColor();
-		      }
+		      }*/
 		      
 		  System.out.println(canvas.getBackground().getBlue());    
 		    }
@@ -1200,27 +1202,27 @@ public class SimpleModeller  extends JPanel implements ActionListener {
 
 		
 		panneauCouleur.setLayout(new GridLayout(6, 2, 15, 0));
-		panneauCouleur.add(new JLabel("R-G-B Sliders (0 - 255)"));
-		panneauCouleur.add(new JLabel("H-S-B Sliders (ex-1)"));
+		panneauCouleur.add(new JLabel("R-G-B Sliders (0 - 1)"));
+		 
 		panneauCouleur.add(sliderR);
-		panneauCouleur.add(sliderH);
+	//	panneauCouleur.add(sliderH);
 		panneauCouleur.add(sliderG);
-		panneauCouleur.add(sliderS);
+		//panneauCouleur.add(sliderS);
 		panneauCouleur.add(sliderB);
-		panneauCouleur.add(sliderBr);
+		//panneauCouleur.add(sliderBr);
  
-		panneauCouleur.add(new JLabel("Alpha Adjustment (0 - 255): ", JLabel.RIGHT));
+		panneauCouleur.add(new JLabel("Alpha Adjustment (0 - 1): ", JLabel.LEFT));
 		panneauCouleur.add(sliderAlpha);
  
-		panneauCouleur.add(new JLabel("RGB Value: ", JLabel.RIGHT));
- 	    
+		 
+		 
  	    rgbValue.setBackground(Color.white);
  	    rgbValue.setForeground(Color.black);
  	    rgbValue.setOpaque(true);
- 	   panneauCouleur.add(rgbValue);
- 
+ 	  // panneauCouleur.add(rgbValue);
+ 	  rgbValue.setVisible(false);
  	 
- 	 panneauCouleur.add(canvas);
+ 	 //panneauCouleur.add(canvas);
         
        
       //scene.setColorOfBox(sceneViewer.returnSelectedBox(),canvas.redValue, canvas.greenValue, canvas.blueValue);
