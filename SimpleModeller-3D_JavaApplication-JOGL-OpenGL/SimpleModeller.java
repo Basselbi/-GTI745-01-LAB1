@@ -887,7 +887,7 @@ public class SimpleModeller  extends JPanel implements ActionListener {
 	Container toolPanel;
 	SceneViewer sceneViewer;
 	DrawingCanvas canvas = new DrawingCanvas();
-	JMenuItem deleteAllMenuItem, quitMenuItem, aboutMenuItem;
+	JMenuItem deleteAllMenuItem, quitMenuItem, aboutMenuItem,savecamera;
 	JButton createBoxButton;
 	JButton deleteSelectionButton;
 	JButton lookAtSelectionButton;
@@ -1083,6 +1083,21 @@ public class SimpleModeller  extends JPanel implements ActionListener {
 				sceneViewer.repaint();
 			}
 		}
+		else   
+		if ( source == savecamera ) {
+			int response = JOptionPane.showConfirmDialog(
+				frame,
+				"Really Save All?",
+				"Confirm Save All",
+				JOptionPane.YES_NO_OPTION
+			);
+
+			if (response == JOptionPane.YES_OPTION) {
+			//	sceneViewer.deleteAll();
+				sceneViewer.repaint();
+			}
+		}
+		 
 		else if ( source == quitMenuItem ) {
 			int response = JOptionPane.showConfirmDialog(
 				frame,
@@ -1165,6 +1180,10 @@ public class SimpleModeller  extends JPanel implements ActionListener {
 				menu.add(deleteAllMenuItem);
 
 				menu.addSeparator();
+				
+				savecamera = new JMenuItem("Save Camera");
+				savecamera.addActionListener(this);
+				menu.add(savecamera);
 
 				quitMenuItem = new JMenuItem("Quit");
 				quitMenuItem.addActionListener(this);
